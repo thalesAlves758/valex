@@ -1,7 +1,10 @@
 /* eslint-disable */
 export enum HttpErrorType {
-  UNAUTHORIZED = 'UNAUTHORIZED',
-  INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR',
+  UNAUTHORIZED = 'Unauthorized',
+  NOT_FOUND = 'Not Found',
+  CONFLICT = 'Conflict',
+  UNPROCESSABLE_ENTITY = 'Unprocessable Entity',
+  INTERNAL_SERVER_ERROR = 'Internal Server Error',
 }
 
 export interface HttpException {
