@@ -1,5 +1,7 @@
 node_modules/
 dist
+src/repositories
+src/utils
 /*.js
 /*.json
 .env.example
