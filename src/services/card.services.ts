@@ -177,7 +177,10 @@ function getTotalValue(
   const INITIAL_VALUE = 0;
 
   return (arrayWithAmount as []).reduce(
-    (accumulator, current) => accumulator + current,
+    (
+      accumulator: number,
+      current: PaymentWithBusinessName | Recharge
+    ): number => accumulator + current.amount,
     INITIAL_VALUE
   );
 }
