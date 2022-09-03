@@ -5,6 +5,7 @@ import validateSchema from '../middlewares/validateSchema.middleware';
 import activeCardSchema from '../schemas/activeCard.schema';
 import blockCardSchema from '../schemas/blockCard.schema';
 import cardSchema from '../schemas/card.schema';
+import paymentSchema from '../schemas/payment.schema';
 import rechargeSchema from '../schemas/rechargeCard.schema';
 
 const cardsRouter = Router();
@@ -36,6 +37,11 @@ cardsRouter.post(
   validateApiKey,
   validateSchema(rechargeSchema),
   cardController.recharge
+);
+cardsRouter.post(
+  '/cards/:cardId/payment',
+  validateSchema(paymentSchema),
+  cardController.pay
 );
 
 export default cardsRouter;
