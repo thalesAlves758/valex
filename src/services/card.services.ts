@@ -224,7 +224,7 @@ export function validateNoActivedCard(cardPassword: string | undefined) {
   }
 }
 
-function validatePassword(originalPassword: string, password: string) {
+export function validatePassword(originalPassword: string, password: string) {
   if (!bcrypt.compareSync(password, originalPassword)) {
     throw HttpError(HttpErrorType.UNAUTHORIZED, `Wrong password`);
   }
