@@ -95,7 +95,7 @@ export async function createCard(
   await insert(newCard);
 }
 
-async function getCardById(cardId: number): Promise<Card> {
+export async function getCardById(cardId: number): Promise<Card> {
   const card = await findById(cardId);
 
   if (!card) {
