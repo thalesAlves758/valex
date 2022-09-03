@@ -6,6 +6,7 @@ import {
   blockCard,
   unblockCard,
 } from '../services/card.services';
+import { createPayment } from '../services/payment.services';
 import { rechargeCardByid } from '../services/recharge.services';
 import HttpStatus from '../utils/HttpStatus';
 
@@ -58,6 +59,15 @@ export async function recharge(req: Request, res: Response) {
   const { amount } = req.body;
 
   await rechargeCardByid(cardId, amount);
+
+  res.sendStatus(HttpStatus.CREATED);
+}
+
+export async function pay(req: Request, res: Response) {
+  const cardId: number = Number(req.params.cardId);
+  const { password, businessId, amount } = req.body;
+
+  await createPayment(cardId, password, businessId, amount);
 
   res.sendStatus(HttpStatus.CREATED);
 }
