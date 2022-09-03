@@ -1,5 +1,9 @@
 import { Request, Response } from 'express';
-import { createCard, activeCard } from '../services/card.services';
+import {
+  createCard,
+  activeCard,
+  getCardBalanceById,
+} from '../services/card.services';
 import HttpStatus from '../utils/HttpStatus';
 
 export async function create(req: Request, res: Response) {
@@ -18,4 +22,12 @@ export async function active(req: Request, res: Response) {
   await activeCard(cardId, securityCode, password);
 
   res.sendStatus(HttpStatus.OK);
+}
+
+export async function getBalance(req: Request, res: Response) {
+  const cardId: number = Number(req.params.cardId);
+
+  const cardBalance = await getCardBalanceById(cardId);
+
+  res.send(cardBalance);
 }
