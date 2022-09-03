@@ -3,6 +3,7 @@ import {
   createCard,
   activeCard,
   getCardBalanceById,
+  blockCard,
 } from '../services/card.services';
 import HttpStatus from '../utils/HttpStatus';
 
@@ -30,4 +31,13 @@ export async function getBalance(req: Request, res: Response) {
   const cardBalance = await getCardBalanceById(cardId);
 
   res.send(cardBalance);
+}
+
+export async function block(req: Request, res: Response) {
+  const cardId: number = Number(req.params.cardId);
+  const { password } = req.body;
+
+  await blockCard(cardId, password);
+
+  res.sendStatus(HttpStatus.NO_CONTENT);
 }
