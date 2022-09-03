@@ -118,13 +118,13 @@ function validateCardExpiration(expirationDate: string) {
     .year(Number(year));
 
   if (!date.isBefore(dayjs())) {
-    throw HttpError(HttpErrorType.BAD_REQUEST, `Can't active an expired card`);
+    throw HttpError(HttpErrorType.BAD_REQUEST, `Expired card`);
   }
 }
 
 function validateCardActivation(cardPassword: string | undefined) {
   if (typeof cardPassword === 'string') {
-    throw HttpError(HttpErrorType.BAD_REQUEST, `Can't active an actived card`);
+    throw HttpError(HttpErrorType.BAD_REQUEST, `Actived card`);
   }
 }
 
@@ -207,4 +207,37 @@ export async function getCardBalanceById(cardId: number): Promise<cardBalance> {
   };
 
   return cardBalanceData;
+}
+
+function validateCardBlock(blocked: boolean) {
+  if (blocked) {
+    throw HttpError(
+      HttpErrorType.BAD_REQUEST,
+      `Can't block a card already blocked`
+    );
+  }
+}
+
+function validateNoActivedCard(cardPassword: string | undefined) {
+  if (!cardPassword) {
+    throw HttpError(HttpErrorType.BAD_REQUEST, `No actived card`);
+  }
+}
+
+function validatePassword(originalPassword: string, password: string) {
+  if (!bcrypt.compareSync(password, originalPassword)) {
+    throw HttpError(HttpErrorType.UNAUTHORIZED, `Wrong password`);
+  }
+}
+
+export async function blockCard(cardId: number, password: string) {
+  const card = await getCardById(cardId);
+
+  validateCardExpiration(card.expirationDate);
+  validateNoActivedCard(card.password);
+  validateCardBlock(card.isBlocked);
+
+  validatePassword(card.password as string, password);
+
+  await update(cardId, { isBlocked: true });
 }
