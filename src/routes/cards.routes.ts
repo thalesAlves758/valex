@@ -18,5 +18,6 @@ cardsRouter.post(
   validateSchema(activeCardSchema),
   cardController.active
 );
+cardsRouter.get('/cards/:cardId/balance', cardController.getBalance);
 
 export default cardsRouter;
