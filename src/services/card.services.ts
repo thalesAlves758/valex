@@ -13,7 +13,6 @@ import {
   TransactionTypes,
   update,
 } from '../repositories/cardRepository';
-import { findCompanyByApiKey } from './company.services';
 import { findEmployeeById } from './employee.services';
 import dotenv from 'dotenv';
 import { PaymentWithBusinessName } from '../repositories/paymentRepository';
@@ -22,10 +21,6 @@ import { getPaymentByCardId } from './payment.services';
 import { getRechargeByCardId } from './recharge.services';
 
 dotenv.config();
-
-async function validateCompany(apiKey: string) {
-  await findCompanyByApiKey(apiKey);
-}
 
 async function validateCard(employeeId: number, cardType: string) {
   const card = await findByTypeAndEmployeeId(
@@ -70,13 +65,7 @@ function getCardCVC() {
   return cryptr.encrypt(faker.finance.creditCardCVV());
 }
 
-export async function createCard(
-  employeeId: number,
-  cardType: string,
-  companyApiKey: string
-) {
-  await validateCompany(companyApiKey);
-
+export async function createCard(employeeId: number, cardType: string) {
   const employee = await findEmployeeById(employeeId);
 
   await validateCard(employeeId, cardType);
