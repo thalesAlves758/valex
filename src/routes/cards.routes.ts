@@ -5,6 +5,7 @@ import validateSchema from '../middlewares/validateSchema.middleware';
 import activeCardSchema from '../schemas/activeCard.schema';
 import blockCardSchema from '../schemas/blockCard.schema';
 import cardSchema from '../schemas/card.schema';
+import rechargeSchema from '../schemas/rechargeCard.schema';
 
 const cardsRouter = Router();
 
@@ -29,6 +30,12 @@ cardsRouter.post(
   '/cards/:cardId/unblock',
   validateSchema(blockCardSchema),
   cardController.unblock
+);
+cardsRouter.post(
+  '/cards/:cardId/recharge',
+  validateApiKey,
+  validateSchema(rechargeSchema),
+  cardController.recharge
 );
 
 export default cardsRouter;
