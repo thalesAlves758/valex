@@ -25,6 +25,7 @@
   "homepage": "https://github.com/thalesAlves758/valex#readme",
   "devDependencies": {
     "@faker-js/faker": "^7.5.0",
+    "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.12",
     "@types/cryptr": "^4.0.1",
     "@types/dotenv": "^8.2.0",
@@ -47,6 +48,7 @@
     "typescript": "^4.8.2"
   },
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "cryptr": "^6.0.3",
     "dayjs": "^1.11.5",
