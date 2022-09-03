@@ -212,7 +212,7 @@ export async function getCardBalanceById(cardId: number): Promise<cardBalance> {
   return cardBalanceData;
 }
 
-function validateCardBlock(blocked: boolean) {
+export function validateCardBlock(blocked: boolean) {
   if (blocked) {
     throw HttpError(
       HttpErrorType.BAD_REQUEST,
