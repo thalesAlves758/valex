@@ -218,7 +218,7 @@ function validateCardBlock(blocked: boolean) {
   }
 }
 
-function validateNoActivedCard(cardPassword: string | undefined) {
+export function validateNoActivedCard(cardPassword: string | undefined) {
   if (!cardPassword) {
     throw HttpError(HttpErrorType.BAD_REQUEST, `No actived card`);
   }
