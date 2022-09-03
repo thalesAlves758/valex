@@ -8,6 +8,12 @@ function errorHandler(
   res: Response,
   next: NextFunction
 ) {
+  if (error.type === HttpErrorType.BAD_REQUEST) {
+    return res
+      .status(httpStatus.BAD_REQUEST)
+      .send(error.message ?? HttpErrorType.BAD_REQUEST);
+  }
+
   if (error.type === HttpErrorType.UNAUTHORIZED) {
     return res
       .status(httpStatus.UNAUTHORIZED)
