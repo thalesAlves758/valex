@@ -6,6 +6,7 @@ import {
   blockCard,
   unblockCard,
 } from '../services/card.services';
+import { rechargeCardByid } from '../services/recharge.services';
 import HttpStatus from '../utils/HttpStatus';
 
 export async function create(req: Request, res: Response) {
@@ -50,4 +51,13 @@ export async function unblock(req: Request, res: Response) {
   await unblockCard(cardId, password);
 
   res.sendStatus(HttpStatus.NO_CONTENT);
+}
+
+export async function recharge(req: Request, res: Response) {
+  const cardId: number = Number(req.params.cardId);
+  const { amount } = req.body;
+
+  await rechargeCardByid(cardId, amount);
+
+  res.sendStatus(HttpStatus.CREATED);
 }
