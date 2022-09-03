@@ -241,3 +241,24 @@ export async function blockCard(cardId: number, password: string) {
 
   await update(cardId, { isBlocked: true });
 }
+
+function validateCardUnblock(blocked: boolean) {
+  if (!blocked) {
+    throw HttpError(
+      HttpErrorType.BAD_REQUEST,
+      `Can't block a card already unblocked`
+    );
+  }
+}
+
+export async function unblockCard(cardId: number, password: string) {
+  const card = await getCardById(cardId);
+
+  validateCardExpiration(card.expirationDate);
+  validateNoActivedCard(card.password);
+  validateCardUnblock(card.isBlocked);
+
+  validatePassword(card.password as string, password);
+
+  await update(cardId, { isBlocked: false });
+}
