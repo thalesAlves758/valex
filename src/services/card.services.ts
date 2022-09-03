@@ -108,7 +108,7 @@ export async function getCardById(cardId: number): Promise<Card> {
   return card;
 }
 
-function validateCardExpiration(expirationDate: string) {
+export function validateCardExpiration(expirationDate: string) {
   const ONE = 1;
 
   const [month, year] = expirationDate.split('/');
