@@ -1,5 +1,6 @@
 /* eslint-disable */
 export enum HttpErrorType {
+  BAD_REQUEST = 'Bad Request',
   UNAUTHORIZED = 'Unauthorized',
   NOT_FOUND = 'Not Found',
   CONFLICT = 'Conflict',
