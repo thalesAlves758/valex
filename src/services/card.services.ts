@@ -214,10 +214,7 @@ export async function getCardBalanceById(cardId: number): Promise<cardBalance> {
 
 export function validateCardBlock(blocked: boolean) {
   if (blocked) {
-    throw HttpError(
-      HttpErrorType.BAD_REQUEST,
-      `Can't block a card already blocked`
-    );
+    throw HttpError(HttpErrorType.BAD_REQUEST, `Blocked card`);
   }
 }
 
