@@ -1,12 +1,17 @@
 import { faker } from '@faker-js/faker';
 import Cryptr from 'cryptr';
 import dayjs from 'dayjs';
+import bcrypt from 'bcrypt';
 import { HttpError, HttpErrorType } from '../exceptions/http.exception';
 import {
+  Card,
   CardInsertData,
+  CardUpdateData,
+  findById,
   findByTypeAndEmployeeId,
   insert,
   TransactionTypes,
+  update,
 } from '../repositories/cardRepository';
 import { findCompanyByApiKey } from './company.services';
 import { findEmployeeById } from './employee.services';
@@ -84,4 +89,74 @@ export async function createCard(
   };
 
   await insert(newCard);
+}
+
+async function getCardById(cardId: number): Promise<Card> {
+  const card = await findById(cardId);
+
+  if (!card) {
+    throw HttpError(
+      HttpErrorType.NOT_FOUND,
+      `Could not find a card with id ${cardId}`
+    );
+  }
+
+  return card;
+}
+
+function validateCardExpiration(expirationDate: string) {
+  const ONE = 1;
+
+  const [month, year] = expirationDate.split('/');
+
+  const date = dayjs()
+    .month(Number(month) - ONE)
+    .year(Number(year));
+
+  if (!date.isBefore(dayjs())) {
+    throw HttpError(HttpErrorType.BAD_REQUEST, `Can't active an expired card`);
+  }
+}
+
+function validateCardActivation(cardPassword: string | undefined) {
+  if (typeof cardPassword === 'string') {
+    throw HttpError(HttpErrorType.BAD_REQUEST, `Can't active an actived card`);
+  }
+}
+
+function validateSecurityCode(
+  cryptedSecurityCode: string,
+  securityCode: string
+) {
+  const cryptr = new Cryptr(process.env.CRYPTR_SECRET ?? '');
+
+  const originalSecurityCode = cryptr.decrypt(cryptedSecurityCode);
+
+  if (securityCode !== originalSecurityCode) {
+    throw HttpError(HttpErrorType.BAD_REQUEST, 'Wrong Security Code');
+  }
+}
+
+function hashText(text: string): string {
+  const salt = 10;
+
+  return bcrypt.hashSync(text, salt);
+}
+
+export async function activeCard(
+  cardId: number,
+  securityCode: string,
+  password: string
+) {
+  const card = await getCardById(cardId);
+
+  validateCardExpiration(card.expirationDate);
+  validateCardActivation(card.password);
+  validateSecurityCode(card.securityCode, securityCode);
+
+  const cardData: CardUpdateData = {
+    password: hashText(password),
+  };
+
+  await update(cardId, cardData);
 }
