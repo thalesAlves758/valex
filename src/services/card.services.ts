@@ -16,6 +16,10 @@ import {
 import { findCompanyByApiKey } from './company.services';
 import { findEmployeeById } from './employee.services';
 import dotenv from 'dotenv';
+import { PaymentWithBusinessName } from '../repositories/paymentRepository';
+import { Recharge } from '../repositories/rechargeRepository';
+import { getPaymentByCardId } from './payment.services';
+import { getRechargeByCardId } from './recharge.services';
 
 dotenv.config();
 
@@ -159,4 +163,48 @@ export async function activeCard(
   };
 
   await update(cardId, cardData);
+}
+
+type cardBalance = {
+  balance: number;
+  transactions: PaymentWithBusinessName[];
+  recharges: Recharge[];
+};
+
+function getTotalValue(
+  arrayWithAmount: PaymentWithBusinessName[] | Recharge[]
+) {
+  const INITIAL_VALUE = 0;
+
+  return (arrayWithAmount as []).reduce(
+    (accumulator, current) => accumulator + current,
+    INITIAL_VALUE
+  );
+}
+
+function calculateCardBalance(
+  transactions: PaymentWithBusinessName[],
+  recharges: Recharge[]
+): number {
+  const totalTransactions = getTotalValue(transactions);
+  const totalRecharges = getTotalValue(recharges);
+
+  return totalRecharges - totalTransactions;
+}
+
+export async function getCardBalanceById(cardId: number): Promise<cardBalance> {
+  await getCardById(cardId);
+
+  const [transactions, recharges] = await Promise.all([
+    getPaymentByCardId(cardId),
+    getRechargeByCardId(cardId),
+  ]);
+
+  const cardBalanceData: cardBalance = {
+    balance: calculateCardBalance(transactions, recharges),
+    transactions,
+    recharges,
+  };
+
+  return cardBalanceData;
 }
