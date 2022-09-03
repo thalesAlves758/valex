@@ -3,6 +3,7 @@ import * as cardController from '../controllers/card.controller';
 import validateApiKey from '../middlewares/validateApiKey.middleware';
 import validateSchema from '../middlewares/validateSchema.middleware';
 import activeCardSchema from '../schemas/activeCard.schema';
+import blockCardSchema from '../schemas/blockCard.schema';
 import cardSchema from '../schemas/card.schema';
 
 const cardsRouter = Router();
@@ -19,5 +20,10 @@ cardsRouter.post(
   cardController.active
 );
 cardsRouter.get('/cards/:cardId/balance', cardController.getBalance);
+cardsRouter.post(
+  '/cards/:cardId/block',
+  validateSchema(blockCardSchema),
+  cardController.block
+);
 
 export default cardsRouter;
