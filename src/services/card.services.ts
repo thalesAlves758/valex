@@ -20,6 +20,7 @@ import { PaymentWithBusinessName } from '../repositories/paymentRepository';
 import { Recharge } from '../repositories/rechargeRepository';
 import { getPaymentByCardId } from './payment.services';
 import { getRechargeByCardId } from './recharge.services';
+import dateStringToDayjs from '../utils/dateStringToDayjs';
 
 dotenv.config();
 
@@ -99,13 +100,7 @@ export async function getCardById(cardId: number): Promise<Card> {
 }
 
 export function validateCardExpiration(expirationDate: string) {
-  const ONE = 1;
-
-  const [month, year] = expirationDate.split('/');
-
-  const date = dayjs()
-    .month(Number(month) - ONE)
-    .year(Number(year));
+  const date = dateStringToDayjs(expirationDate);
 
   if (!date.isBefore(dayjs())) {
     throw HttpError(HttpErrorType.BAD_REQUEST, `Expired card`);
