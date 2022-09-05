@@ -2,11 +2,6 @@
 
 ## Uma API feita com TypeScript para cartões de benefícios
 
-<h4 align="center"> 
-	<!-- 🚧  Em desenvolvimento...  🚧 -->
-	✅  Concluído!  ✅
-</h4>
-
 ### Features
 
 - Cartões
