@@ -6,7 +6,10 @@ import {
   blockCard,
   unblockCard,
 } from '../services/card.services';
-import { createPayment } from '../services/payment.services';
+import {
+  createPayment,
+  createOnlinePayment,
+} from '../services/payment.services';
 import { rechargeCardByid } from '../services/recharge.services';
 import HttpStatus from '../utils/HttpStatus';
 
@@ -67,6 +70,28 @@ export async function pay(req: Request, res: Response) {
   const { password, businessId, amount } = req.body;
 
   await createPayment(cardId, password, businessId, amount);
+
+  res.sendStatus(HttpStatus.CREATED);
+}
+
+export async function payOnline(req: Request, res: Response) {
+  const {
+    number,
+    cardholderName,
+    expirationDate,
+    securityCode,
+    businessId,
+    amount,
+  } = req.body;
+
+  await createOnlinePayment(
+    number,
+    cardholderName,
+    expirationDate,
+    securityCode,
+    businessId,
+    amount
+  );
 
   res.sendStatus(HttpStatus.CREATED);
 }
