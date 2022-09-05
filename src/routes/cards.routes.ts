@@ -5,6 +5,7 @@ import validateSchema from '../middlewares/validateSchema.middleware';
 import activeCardSchema from '../schemas/activeCard.schema';
 import blockCardSchema from '../schemas/blockCard.schema';
 import cardSchema from '../schemas/card.schema';
+import onlinePaymentSchema from '../schemas/onlinePayment.schema';
 import paymentSchema from '../schemas/payment.schema';
 import rechargeSchema from '../schemas/rechargeCard.schema';
 
@@ -42,6 +43,11 @@ cardsRouter.post(
   '/cards/:cardId/payment',
   validateSchema(paymentSchema),
   cardController.pay
+);
+cardsRouter.post(
+  '/cards/onlinePayment',
+  validateSchema(onlinePaymentSchema),
+  cardController.payOnline
 );
 
 export default cardsRouter;
