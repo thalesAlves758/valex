@@ -185,7 +185,7 @@ $ npm run dev
       "number": "6578-5604-8724-0055",
       "cardholderName": "FULANO R SILVA",
       "expirationDate": "09/27",
-      "securityCode": "894",
+      "securityCode": "999",
       "businessId": 3,
       "amount": 1000
     }
