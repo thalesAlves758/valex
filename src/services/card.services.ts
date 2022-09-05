@@ -7,6 +7,7 @@ import {
   Card,
   CardInsertData,
   CardUpdateData,
+  findByCardDetails,
   findById,
   findByTypeAndEmployeeId,
   insert,
@@ -117,7 +118,7 @@ function validateCardActivation(cardPassword: string | undefined) {
   }
 }
 
-function validateSecurityCode(
+export function validateSecurityCode(
   cryptedSecurityCode: string,
   securityCode: string
 ) {
@@ -250,4 +251,21 @@ export async function unblockCard(cardId: number, password: string) {
   validatePassword(card.password as string, password);
 
   await update(cardId, { isBlocked: false });
+}
+
+export async function getCardByDetails(
+  number: string,
+  cardholderName: string,
+  expirationDate: string
+) {
+  const card = await findByCardDetails(number, cardholderName, expirationDate);
+
+  if (!card) {
+    throw HttpError(
+      HttpErrorType.NOT_FOUND,
+      'Could not find specified credit card'
+    );
+  }
+
+  return card;
 }
