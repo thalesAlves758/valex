@@ -14,6 +14,7 @@
   - [x] Recarga de cartões
 - Pagamentos
   - [x] Compras em pontos de vendas
+  - [x] Compras online
 
 ### Pré-requisitos
 
@@ -167,6 +168,26 @@ $ npm run dev
       "password": "1234",
       "businessId": 1,
       "amount": 10000
+    }
+    ```
+
+  - Headers?<br>
+    Não é necessário
+    <br>
+
+- POST /cards/onlinePayment<br>
+  Nessa rota, empregados podem comprar de forma online. Para uma compra online ser efetuada precisamos dos dados do cartão (número, nome, data de expiração e CVC), do identificador do estabelecimento e do montante da compra.
+
+  - Exemplo de body:
+
+    ```json
+    {
+      "number": "6578-5604-8724-0055",
+      "cardholderName": "FULANO R SILVA",
+      "expirationDate": "09/27",
+      "securityCode": "894",
+      "businessId": 3,
+      "amount": 1000
     }
     ```
 
